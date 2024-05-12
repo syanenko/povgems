@@ -37,3 +37,6 @@ povray +W320 +H240 +FN -iGemsComposer.pov -o./out/gem.png
 
 And, again, for Windows, use keys from this command lines in editor settigs and look for resulting image in _out_ directory.
 
+Happy rendering !
+
+<em>Contact: [LinkedIn](https://www.linkedin.com/in/sergey-yanenko-57b21a96/)<em>
