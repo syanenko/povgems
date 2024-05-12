@@ -15,7 +15,7 @@
 #include "spectral.inc"
 
 //================================================================================
-// control center
+// Control center
 //================================================================================
 //
 // Select design
@@ -57,7 +57,6 @@ M_Ruby (0.45)
 #declare MaxTrace    = 60;
 #declare Radio       = 1;
 //#declare Photons     = 10000000; // Enable for best quality
-#declare Photons     = 5000000; // Enable for best quality
 #declare Sunlight    = 0.2;
 #declare SkyEmission = 1;
 #declare RoomDesign  = 1; // 6 available
