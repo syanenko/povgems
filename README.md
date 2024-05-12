@@ -28,7 +28,7 @@ To render preview image under Unix run _GemsPreview.sh_ or
 ```
 povray +W640 +H480 +A0.1 +AM2 +R3 +FN -iGemsFactory.pov -o./out/gem
 ```
-If you under Windows, use keys from this command line in editor settigs, rendered image will wait for you in _out_ directory.
+and rendered image will wait for you in _out_ directory. If you under Windows, use keys from this command line in editor settigs. 
 
 For final spectral rendering under Unix run _GemsRender.sh_
 ```
@@ -36,8 +36,9 @@ povray +W320 +H240 +A0.1 +AM2 +R3 +FE +KI1 +KF36 +KFI38 +KFF73 -iGemsFactory.pov
 povray +W320 +H240 +FN -iGemsComposer.pov -o./out/gem.png
 ```
 
-And, again, for Windows, use keys from this command lines in editor settigs and look for resulting image in _out_ directory.
+And, again, for Windows, use keys from this command lines in editor settigs.
 
-Happy rendering !
+Happy rendering !<br><br>
+![image](https://github.com/syanenko/povgems/assets/6688301/04b72d04-9603-446f-9aca-3e90d2a1d554)
 
 <em>Contact: [LinkedIn](https://www.linkedin.com/in/sergey-yanenko-57b21a96/)<em>
