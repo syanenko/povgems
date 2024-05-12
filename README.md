@@ -17,12 +17,8 @@ If you prefere Unix, use [dxf2pov](https://github.com/syanenko/dxf2pov), which a
 
 ## _Rendering_
 
-Edit _Control center_ section in _GemsFactory.pov_ file: uncomment design you want to render and appropriate material.<br>
-Use 
-```
-#declare Photons = ...
-```
-for better quality.
+Edit _'Control center'_ section in _GemsFactory.pov_ file: uncomment design you want to render and appropriate material.<br>
+Play with other setting in this section to adjust lighting, environment, etc.
 
 To render preview image under Unix run _GemsPreview.sh_ or
 ```
@@ -30,7 +26,7 @@ povray +W640 +H480 +A0.1 +AM2 +R3 +FN -iGemsFactory.pov -o./out/gem
 ```
 and rendered image will wait for you in _out_ directory. If you under Windows, use keys from this command line in editor settigs. 
 
-For final spectral rendering under Unix run _GemsRender.sh_
+For final spectral rendering under Unix run _GemsRender.sh_ or
 ```
 povray +W320 +H240 +A0.1 +AM2 +R3 +FE +KI1 +KF36 +KFI38 +KFF73 -iGemsFactory.pov -o./out/gem
 povray +W320 +H240 +FN -iGemsComposer.pov -o./out/gem.png
