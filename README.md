@@ -1,5 +1,5 @@
 # POV-Ray gems rendering extension
- [SpectralRenderer](https://www.lilysoft.org/CGI/SR/Spectral%20Render.htm), extension to [POV-Ray](https://www.povray.org/), written by Ive of LILYsoft has few excelent examples of gems rendering and set of mineral materials.
+ [SpectralRenderer](https://www.lilysoft.org/CGI/SR/Spectral%20Render.htm) extension to [POV-Ray](https://www.povray.org/), written by Ive of LILYsoft has few excelent examples of gems rendering and set of mineral materials.
  This reposotory contains few additions, improving gems rendering techniques and gems geomety in _DXF_ and _SDL_ _mesh_ formats.
 
 ## _Preparing data_
@@ -27,6 +27,7 @@ To render preview image under Unix run _GemsPreview.sh_ or
 povray +W640 +H480 +A0.1 +AM2 +R3 +FN -iGemsFactory.pov -o./out/gem
 ```
 If you under Windows, use keys from this command line in editor settigs.
+Rendered image will wait for you in _out_ directory.
 
 For final spectral rendering under Unix run _GemsRender.sh_
 ```
@@ -34,6 +35,5 @@ povray +W320 +H240 +A0.1 +AM2 +R3 +FE +KI1 +KF36 +KFI38 +KFF73 -iGemsFactory.pov
 povray +W320 +H240 +FN -iGemsComposer.pov -o./out/gem.png
 ```
 
-
-
+And, again, for Windows, use keys from this command lines in editor settigs and look for resulting image in _out_ directory.
 
