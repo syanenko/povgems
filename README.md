@@ -24,8 +24,7 @@ To render preview image under Unix run _GemsPreview.sh_ or
 ```
 povray +W640 +H480 +A0.1 +AM2 +R3 +FN -iGemsFactory.pov -o./out/gem
 ```
-and rendered image will wait for you in _out_ directory. If you under Windows, use keys from this command line in editor's menu:<br>
-'Render->Edit settings/Render->Command line options'.
+and rendered image will wait for you in _out_ directory. If you under Windows, use keys from this command line in editor's menu: 'Render->Edit settings/Render->Command line options'.
 
 For final spectral rendering under Unix run _GemsRender.sh_ or
 ```
