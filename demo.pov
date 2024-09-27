@@ -27,19 +27,19 @@
 // Select material
 //
 #macro Mat()
-// M_Emerald (0.25)
+M_Emerald (0.25)
 // M_Sapphire (0.85)
 // M_Amethyst (0.25)
 // M_Diamond_NaturalYellow(0.45)
 // M_Topaz(0.15)
-M_Ruby (0.45)
+// M_Ruby (0.45)
 #end
 
 // 
 // Set transformations
 //
 #macro Trans()
-  scale 0.8
+  scale 1
   rotate -x * 90
   rotate y * 15
   translate <50.1, 81.2, 175>
@@ -51,7 +51,7 @@ M_Ruby (0.45)
 #declare MaxTrace    = 15;
 #declare Radio       = 1;
 // #declare Photons     = 10000000; // Enable for best quality
-#declare Sunlight    = 0.2;
+#declare Sunlight    = 3.5;
 #declare SkyEmission = 1;
 #declare RoomDesign  = 6; // 6 available
 
