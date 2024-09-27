@@ -13,26 +13,27 @@
 //
 // Select design
 // 
-// #include "gems/inc/pc01024.inc"
+#include "gems/inc/pc01024.inc"
+// #include "gems/inc/pc01035.inc"
 
 // #include "gems/inc/Asashi.inc"
 // #include "gems/inc/Maya_drop.inc"
 // #include "gems/inc/Bugbarion.inc"
 // #include "gems/inc/Bugbarionegg.inc"
-#include "gems/inc/pc01035.inc"
+
 // #include "gems/inc/pc15011.inc"
 // #include "gems/inc/pc08049.inc"
-// #include "gems/inc/Trilled.inc"
+//#include "gems/inc/Trilled.inc"
 
 // 
 // Select material
 //
 #macro Mat()
-// M_Emerald (0.25)
+M_Emerald (0.25)
 // M_Sapphire (0.85)
-M_Amethyst (0.25)
+// M_Amethyst (0.25)
 // M_Diamond_NaturalYellow(0.45)
-// M_Topaz(0.15)
+// M_Topaz(0.08)
 // M_Ruby (0.45)
 #end
 
