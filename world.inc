@@ -324,9 +324,9 @@ camera {
     #declare M_Table  = M_Spectral_Matte (D_RGB (0.15, 0.15, 0.15))
     #break
 
-  // custom
+  // Custom
   #case (6)
-    #declare T_Wall1  = T_Spectral_Matte (D_RGB (0.005, 0.005, 0.005))
+    #declare T_Wall1  = T_Spectral_Matte (D_RGB (0.001, 0.001, 0.001))
 
     #declare T_Wall2  = T_Spectral_Matte (D_CC_B4) 
     //#declare T_Wall2  = T_Spectral_Matte (D_RGB (1.28, 1.28, 1.28))

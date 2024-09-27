@@ -15,10 +15,10 @@
 // 
 // #include "gems/inc/pc01024.inc"
 // #include "gems/inc/pc01035.inc"
-#include "gems/inc/Bugbarion.inc"
-
+// #include "gems/inc/Bugbarion.inc"
 #include "gems/inc/Asashi.inc"
 // #include "gems/inc/Maya_drop.inc"
+
 // #include "gems/inc/Bugbarionegg.inc"
 // #include "gems/inc/pc15011.inc"
 // #include "gems/inc/pc08049.inc"
@@ -40,10 +40,9 @@ M_Ruby (0.25)
 // Set transformations
 //
 #macro Trans()
-  scale 1
-  rotate -x * 90
-  rotate y * 25
-  translate <50.1, 81.4, 175>
+  scale 1      
+  rotate <-90, 22, 0>
+  translate <50.1, 81.35, 175>
 #end
 
 //
@@ -51,11 +50,13 @@ M_Ruby (0.25)
 //
 #declare LightFadePower = 2;
 #declare LightFadeDistance = 27;
-#declare MaxTrace    = 7;
 #declare Sunlight    = 1.2;
-#declare SkyEmission = 1;
-#declare RoomDesign  = 6; // 6 available
 #declare AreaLight   = 1;
+#declare MaxTrace    = 7;
+
+#declare RoomDesign  = 6; // of 6
+#declare SkyEmission = 1;
+
 #declare Radio       = 0;
 // #declare Photons     = 10000000; // Enable for best quality
 
