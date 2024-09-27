@@ -13,15 +13,16 @@
 //
 // Select design
 // 
-// #include "gems/Asashi.inc"
-// #include "gems/Maya_drop.inc"
-// #include "gems/Bugbarion.inc"
-// #include "gems/Bugbarionegg.inc"
-// #include "gems/pc01035.inc"
-// #include "gems/pc15011.inc"
-#include "gems/inc/pc01024.inc"
-// #include "gems/pc08049.inc"
-// #include "gems/Trilled.inc"
+// #include "gems/inc/pc01024.inc"
+
+// #include "gems/inc/Asashi.inc"
+// #include "gems/inc/Maya_drop.inc"
+// #include "gems/inc/Bugbarion.inc"
+// #include "gems/inc/Bugbarionegg.inc"
+#include "gems/inc/pc01035.inc"
+// #include "gems/inc/pc15011.inc"
+// #include "gems/inc/pc08049.inc"
+// #include "gems/inc/Trilled.inc"
 
 // 
 // Select material
@@ -54,6 +55,7 @@ M_Emerald (0.25)
 #declare Sunlight    = 3.5;
 #declare SkyEmission = 1;
 #declare RoomDesign  = 6; // 6 available
+#declare AreaLight   = 1;
 
 //
 // Camera
@@ -98,7 +100,7 @@ object { Table
     no_radiosity
   }
 
-  translate <90, 110, 220>  
+  translate Cam_Pos * 0.7
 }  
     
 object {Lamp}    
