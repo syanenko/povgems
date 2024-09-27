@@ -25,7 +25,7 @@
 // #include "gems/inc/Trilled.inc"
 
 // 
-// Select material
+// Material
 //
 #macro Mat()
 // M_Emerald (0.15)
@@ -37,7 +37,7 @@ M_Ruby (0.25)
 #end
 
 // 
-// Set transformations
+// Transformations
 //
 #macro Trans()
   scale 1      
@@ -46,7 +46,7 @@ M_Ruby (0.25)
 #end
 
 //
-// Lighting / Environment
+// Lighting
 //
 #declare LightFadePower = 2;
 #declare LightFadeDistance = 27;
@@ -54,11 +54,18 @@ M_Ruby (0.25)
 #declare AreaLight   = 1;
 #declare MaxTrace    = 7;
 
-#declare RoomDesign  = 6; // of 6
-#declare SkyEmission = 1;
-
 #declare Radio       = 0;
 // #declare Photons     = 10000000; // Enable for best quality
+
+//
+// Environment
+//
+#declare UseRoom  = 1;
+#declare UseSky   = 0;
+#declare UseTable = 0;
+
+#declare RoomDesign  = 6; // of 6
+#declare SkyEmission = 1;
 
 //
 // Camera
@@ -72,15 +79,23 @@ M_Ruby (0.25)
 // Sky, room ...
 //================================================================================
 #include "world.inc"
-object { Room }
-/*
-object { Sky }
-object { Table
-  scale <0.6, 1, 0.6>
-  rotate y*25
-  translate <60,0,175>
-}
-*/
+
+#if (UseRoom)
+  object { Room }
+#end 
+
+#if (UseSky)
+  object { Sky }
+#end 
+
+#if (UseTable)
+  object { Table
+    scale <0.6, 1, 0.6>
+    rotate y*25
+    translate <60,0,175>
+  }
+#end 
+
 //================================================================================
 // Light
 //================================================================================
