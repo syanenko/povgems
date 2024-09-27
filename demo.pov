@@ -28,9 +28,9 @@
 // Select material
 //
 #macro Mat()
-M_Emerald (0.25)
+// M_Emerald (0.25)
 // M_Sapphire (0.85)
-// M_Amethyst (0.25)
+M_Amethyst (0.25)
 // M_Diamond_NaturalYellow(0.45)
 // M_Topaz(0.15)
 // M_Ruby (0.45)
@@ -50,9 +50,9 @@ M_Emerald (0.25)
 // Lighting / Environment
 //
 #declare MaxTrace    = 15;
-#declare Radio       = 1;
+#declare Radio       = 0;
 // #declare Photons     = 10000000; // Enable for best quality
-#declare Sunlight    = 3.5;
+#declare Sunlight    = 1.2;
 #declare SkyEmission = 1;
 #declare RoomDesign  = 6; // 6 available
 #declare AreaLight   = 1;
