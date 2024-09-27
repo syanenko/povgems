@@ -13,28 +13,27 @@
 //
 // Select design
 // 
-#include "gems/inc/pc01024.inc"
+// #include "gems/inc/pc01024.inc"
 // #include "gems/inc/pc01035.inc"
+#include "gems/inc/Bugbarion.inc"
 
-// #include "gems/inc/Asashi.inc"
+#include "gems/inc/Asashi.inc"
 // #include "gems/inc/Maya_drop.inc"
-// #include "gems/inc/Bugbarion.inc"
 // #include "gems/inc/Bugbarionegg.inc"
-
 // #include "gems/inc/pc15011.inc"
 // #include "gems/inc/pc08049.inc"
-//#include "gems/inc/Trilled.inc"
+// #include "gems/inc/Trilled.inc"
 
 // 
 // Select material
 //
 #macro Mat()
-M_Emerald (0.25)
-// M_Sapphire (0.85)
-// M_Amethyst (0.25)
+// M_Emerald (0.15)
+// M_Sapphire (10.85)
+// M_Amethyst (0.55)
 // M_Diamond_NaturalYellow(0.45)
-// M_Topaz(0.08)
-// M_Ruby (0.45)
+// M_Topaz(0.12)
+M_Ruby (0.25)
 #end
 
 // 
@@ -43,20 +42,22 @@ M_Emerald (0.25)
 #macro Trans()
   scale 1
   rotate -x * 90
-  rotate y * 15
-  translate <50.1, 81.2, 175>
+  rotate y * 25
+  translate <50.1, 81.4, 175>
 #end
 
 //
 // Lighting / Environment
 //
-#declare MaxTrace    = 15;
-#declare Radio       = 0;
-// #declare Photons     = 10000000; // Enable for best quality
+#declare LightFadePower = 2;
+#declare LightFadeDistance = 27;
+#declare MaxTrace    = 7;
 #declare Sunlight    = 1.2;
 #declare SkyEmission = 1;
 #declare RoomDesign  = 6; // 6 available
 #declare AreaLight   = 1;
+#declare Radio       = 0;
+// #declare Photons     = 10000000; // Enable for best quality
 
 //
 // Camera
@@ -84,8 +85,8 @@ object { Table
 //================================================================================
 #declare Lamp = union {
   light_source {0, SpectralEmission(E_Blackbody(5500)) * 60
-  fade_power 2
-  fade_distance 15
+  fade_power LightFadePower
+  fade_distance LightFadeDistance
 
    #if (AreaLight)
     area_light z*5, y*5, 9,9 adaptive 1 circular orient
@@ -102,7 +103,7 @@ object { Table
   }
 
   translate Cam_Pos * 0.7
-}  
+}                                                            
     
 object {Lamp}    
 

@@ -326,7 +326,7 @@ camera {
 
   // custom
   #case (6)
-    #declare T_Wall1  = T_Spectral_Matte (D_RGB (0.01, 0.01, 0.01))
+    #declare T_Wall1  = T_Spectral_Matte (D_RGB (0.005, 0.005, 0.005))
 
     #declare T_Wall2  = T_Spectral_Matte (D_CC_B4) 
     //#declare T_Wall2  = T_Spectral_Matte (D_RGB (1.28, 1.28, 1.28))
