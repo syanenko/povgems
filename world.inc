@@ -326,12 +326,12 @@ camera {
 
   // custom
   #case (6)
-    #declare T_Wall1  = T_Spectral_Matte (D_RGB (0.2, 0.2, 0.2))
-    #declare T_Wall2  = T_Spectral_Matte (D_CC_B4)                   
-    #declare T_Wall3  = T_Spectral_Matte (D_CC_B4)                   
-    #declare T_Ceil   = T_Spectral_Matte (D_CC_A4) 
-    #declare M_Floor  = M_Spectral_Matte (D_CC_A1)
-    #declare M_Table  = M_Spectral_Shiny (D_CC_A4, 0.25, IOR_15)
+    #declare T_Wall1  = T_Spectral_Matte (D_RGB (0.0, 0.0, 0.0))
+    #declare T_Wall2  = T_Spectral_Matte (D_CC_B4) 
+    #declare T_Wall3  = T_Spectral_Matte (D_CC_B4) 
+    #declare T_Ceil   = T_Spectral_Matte (D_CC_A4)
+    #declare M_Floor  = M_Spectral_Shiny (D_RGB (0.1, 0.1, 0.1), 0.20, IOR_15)
+    #declare M_Table  = M_Spectral_Shiny (D_CC_F1, 0.25, IOR_15)
     #break
 
 #end  // switch
