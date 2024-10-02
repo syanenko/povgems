@@ -13,10 +13,10 @@
 //
 // Select design
 // 
-// #include "gems/inc/pc01024.inc"
+#include "gems/inc/pc01024.inc"
 // #include "gems/inc/pc01035.inc"
 // #include "gems/inc/Bugbarion.inc"
-#include "gems/inc/Asashi.inc"
+// #include "gems/inc/Asashi.inc"
 // #include "gems/inc/Maya_drop.inc"
 
 // #include "gems/inc/Bugbarionegg.inc"
@@ -28,12 +28,12 @@
 // Material
 //
 #macro Mat()
-// M_Emerald (0.15)
+M_Emerald (0.15)
 // M_Sapphire (10.85)
-// M_Amethyst (0.55)
-// M_Diamond_NaturalYellow(0.45)
-// M_Topaz(0.12)
-M_Ruby (0.25)
+// M_Amethyst (0.18)
+// M_Diamond_NaturalYellow(0.35)
+// M_Topaz(0.05)
+// M_Ruby (0.25)
 #end
 
 // 
@@ -48,7 +48,7 @@ M_Ruby (0.25)
 //
 // Lighting
 //
-#declare LightFadePower = 2;
+#declare LightFadePower = 1;
 #declare LightFadeDistance = 27;
 #declare Sunlight    = 1.2;
 #declare AreaLight   = 1;
@@ -70,9 +70,9 @@ M_Ruby (0.25)
 //
 // Camera
 //
-#declare Cam_Pos     = < 51, 85.0, 165>;
-#declare Cam_Look    = < 50.1, 81, 175.3>; 
-#declare Cam_Angle   = 15;
+#declare Cam_Pos     = <51, 84.0, 165>;
+#declare Cam_Look    = <50.08, 81.2, 175.3>; 
+#declare Cam_Angle   = 13;
 //================================================================================
 
 //================================================================================
@@ -101,7 +101,7 @@ M_Ruby (0.25)
 //================================================================================
 #declare Lamp = union {
   light_source {0, SpectralEmission(E_Blackbody(5500)) * 60
-  fade_power LightFadePower
+  fade_power LightFadePower * 1.8
   fade_distance LightFadeDistance
 
    #if (AreaLight)
@@ -117,11 +117,19 @@ M_Ruby (0.25)
     no_shadow
     no_radiosity
   }
-
-  translate Cam_Pos * 0.7
 }                                                            
     
-object {Lamp}    
+//object {Lamp translate Cam_Pos * 0.8}
+//object {Lamp translate <0, 0, 100>}
+
+object {Lamp translate <-100, 0, 0>}
+object {Lamp translate <10, 0, 0>}
+
+object {Lamp translate <0, -100, 0>}
+object {Lamp translate <0,  150, 0>}
+
+object {Lamp translate <0, 0, -100>} // Vert
+object {Lamp translate <0, 0, 15>}
 
 //================================================================================
 // Gem
