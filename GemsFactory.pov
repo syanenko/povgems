@@ -14,48 +14,55 @@
 #include "spectral.inc"
 
 //
-// Gem design
-// 
-#include "gems/inc/Asashi.inc"
+// Gem design - 2270 designs available
+//
+// #include "gems/inc/Asashi.inc"
 // #include "gems/inc/Maya_drop.inc"
 // #include "gems/inc/Bugbarion.inc"
 // #include "gems/inc/Bugbarionegg.inc"
+// #include "gems/inc/Trilled.inc"
+
 // #include "gems/inc/pc01035.inc"
 // #include "gems/inc/pc15011.inc"
 // #include "gems/inc/pc01024.inc"
 // #include "gems/inc/pc08049.inc"
-// #include "gems/inc/Trilled.inc"
+#include "gems/inc/pc45149.inc"
 
 // 
 // Material
 //
 #macro Mat()
-// M_Emerald (0.25)
-// M_Sapphire (0.85)
-// M_Amethyst (0.25)
-// M_Diamond_NaturalYellow(0.45)
-// M_Topaz(0.15)
-M_Ruby (0.45)
+  M_Diamond_NaturalYellow(0.35)
+  // M_Diamond_LemonYellow(1.2)
+  // M_Amethyst (0.5)
+  // M_Ruby (0.6)
+  // M_Emerald (0.4)
+  // M_Sapphire (10.85)
+  // M_Topaz(0.23)
 #end
 
 // 
 // Transformations
 //
 #macro Trans()
+  scale 1
   rotate -x * 90
   rotate -y * 90
-  translate <50.1, 81.3, 175>
+  translate <50.1, 81.2, 175>
 #end
 
 //
 // Lighting
 //
+#declare LampPower   = 60;
+#declare Sunlight    = 0.4;
+#declare AreaLight   = true;
+#declare SkyEmission = 1;
+
+
 #declare MaxTrace    = 60;
 #declare Radio       = 1;
-//#declare Photons     = 10000000; // Enable for best quality
-#declare Sunlight    = 0.2;
-#declare SkyEmission = 1;
-#declare RoomDesign  = 1; // 6 available
+#declare Photons     = 5000000; // Enable for best quality
 
 //
 // Camera
@@ -67,40 +74,31 @@ M_Ruby (0.45)
 //
 // Environmet
 //
+#declare RoomDesign = 1; // 6 available
 #include "world.inc"
 
 object { Sky }        
-
-object { Room }
+object { Room scale 0.91}
 
 object { Table  
   scale <0.6, 1, 0.6>
   rotate y*25
-  translate <60,0,175>
+  translate <60, 0.2, 175>
 }
 
 //
 // Light
 //
 #declare Lamp = union {
-  light_source {0, SpectralEmission(E_Blackbody(5500)) * 60
+  light_source {0, SpectralEmission(E_Blackbody(5500)) * LampPower
   fade_power 2
   fade_distance 5
 
    #if (AreaLight)
     area_light z*5, y*5, 9,9 adaptive 1 circular orient
-   #end 
-
-    photons {reflection on refraction on }
+   #end
   }
 
-  sphere { 0, 5
-    pigment { SpectralEmission(E_Blackbody(5500)) }    
-    finish {emission 3 ambient 0 diffuse 0}
-    no_shadow
-    no_radiosity
-  }
-  
   translate <50, 130, 220>
 }  
 object {Lamp}    
@@ -109,7 +107,7 @@ object {Lamp}
 // Gem object
 //
 object {
-  Geom
+  Gem
   Mat()  
   Trans()
   photons {target refraction on reflection on}
