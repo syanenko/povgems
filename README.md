@@ -6,12 +6,12 @@ I am also included modifications from this repository [CousinRicky’s Modificat
 
 ## _Preparing data_
 
-Greate source of gem designs is: http://www.facetdiagrams.org.<br><br> 
+Great source of gem designs is: [Facetdiagrams](http://www.facetdiagrams.org).<br><br> 
 To convert _ASC_ format from this database to DXF [GemCad](https://www.gemcad.com) or more modern tool - [GemcutStudio](https://gemcutstudio.com) can be used.<br>
 Last also has _OBJ_ export function. Then, under Windows for _DXF_ / _OBJ_ to _SDL_ convertion you can use [PoseRay](https://sites.google.com/site/poseray/home-1).<br> 
 If you prefere Unix, use [dxf2pov](https://github.com/syanenko/dxf2pov), which also can be compiled under Windows.
 
-Directory _gems/inc_ contains 2265 gem designs available for free and already converted to POV-Ray meshes.
+Directory _gems/inc_ contains 2265 gem designs available for free at [Facetdiagrams](http://www.facetdiagrams.org) and already converted to POV-Ray meshes.
 
 ## _Rendering_
 
