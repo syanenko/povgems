@@ -5,7 +5,7 @@
 //
 // Gems geometries fetched from: http://www.facetdiagrams.org
 // Converted to DXF format with: https://www.gemcad.com                                   
-// Converted to POV-ray meshes with: https://github.com/syanenko/dxf2pov
+// Converted to POV-Ray meshes with: https://github.com/syanenko/dxf2pov
 // 
 // Sources: https://github.com/syanenko/povgems
 // Author: Sergey N. Yanenko (Yesbird), February 2025
