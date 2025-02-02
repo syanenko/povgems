@@ -1,5 +1,17 @@
 //================================================================================
-// POV-Ray spectral gems rendering example with geometry extention
+// POV-Ray spectral gems rendering with geometries extention
+//
+// Original project by LILYsoft: https://www.lilysoft.org/CGI/SR/Spectral%20Render.htm
+//
+// Gems geometries fetched from: http://www.facetdiagrams.org
+// Converted to DXF format with: https://www.gemcad.com                                   
+// Converted to POV-ray meshes with: https://github.com/syanenko/dxf2pov
+// 
+// Sources: https://github.com/syanenko/povgems
+// Author: Sergey N. Yanenko (Yesbird), February 2025
+// 
+//
+// Spectral calculations:
 //
 // Command line for spectral calculation ('GemsFactory.pov' - produces 36 b/w '*.exr' images):
 // +W640 +H480 +A0.05 +AM2 +R4 +FE +KI1 +KF36 +KFI38 +KFF73
@@ -7,8 +19,6 @@
 // Command line for spectral composer ('Compose.pov' produces final '*.png' image):
 // +W640 +H480 +FN
 //
-// - Gems (gems/*.inc) by Sergey N. Yanenko (Yesbird), May 2024
-// - Ive, September 2012
 //================================================================================
 #version 3.7; 
 #include "spectral.inc"
@@ -16,7 +26,7 @@
 //
 // Gem design - 2270 designs available
 //
-// #include "gems/inc/Asashi.inc"
+#include "gems/inc/Asashi.inc"
 // #include "gems/inc/Maya_drop.inc"
 // #include "gems/inc/Bugbarion.inc"
 // #include "gems/inc/Bugbarionegg.inc"
@@ -26,7 +36,7 @@
 // #include "gems/inc/pc15011.inc"
 // #include "gems/inc/pc01024.inc"
 // #include "gems/inc/pc08049.inc"
-#include "gems/inc/pc45149.inc"
+// #include "gems/inc/pc45149.inc"
 
 // 
 // Mineral
@@ -45,10 +55,10 @@
 // Transformations
 //
 #macro Transform()
-  scale 1
+  scale 1.2
   rotate -x * 90
   rotate -y * 90
-  translate <50.1, 81.2, 175>
+  translate <50.1, 81.5, 175>
 #end
 
 //
@@ -62,7 +72,7 @@
 
 #declare MaxTrace    = 60;
 #declare Radio       = 1;
-#declare Photons     = 5000000; // Enable for best quality
+// #declare Photons     = 10000000; // Enable for best quality
 
 //
 // Camera
@@ -110,5 +120,8 @@ object {
   Geometry
   Mineral()  
   Transform()
-  photons {target refraction on reflection on}
+  photons { target
+            refraction on
+            reflection on
+            collect on }
 }
