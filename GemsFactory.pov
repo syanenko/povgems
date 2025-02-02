@@ -6,10 +6,14 @@
 // Gems geometries fetched from: http://www.facetdiagrams.org
 // Converted to DXF format with: https://www.gemcad.com                                   
 // Converted to POV-Ray meshes with: https://github.com/syanenko/dxf2pov
-// 
 // Sources: https://github.com/syanenko/povgems
+//
+// Online gems viewer: https://gemview.yesbird.online
+//
 // Author: Sergey N. Yanenko (Yesbird), February 2025
-// 
+// Other projects: https://yesbird.online
+//
+//================================================================================
 //
 // Spectral calculations:
 //
