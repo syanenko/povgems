@@ -107,7 +107,7 @@ object {Lamp}
 // Gem object
 //
 object {
-  Gem
+  Geometry
   Mineral()  
   Transform()
   photons {target refraction on reflection on}
