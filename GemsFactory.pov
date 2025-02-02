@@ -10,28 +10,24 @@
 // - Gems (gems/*.inc) by Sergey N. Yanenko (Yesbird), May 2024
 // - Ive, September 2012
 //================================================================================
-
 #version 3.7; 
 #include "spectral.inc"
 
-//================================================================================
-// Control center
-//================================================================================
 //
-// Select design
+// Gem design
 // 
-// #include "gems/inc/Asashi.inc"
+#include "gems/inc/Asashi.inc"
 // #include "gems/inc/Maya_drop.inc"
 // #include "gems/inc/Bugbarion.inc"
 // #include "gems/inc/Bugbarionegg.inc"
 // #include "gems/inc/pc01035.inc"
-#include "gems/inc/pc15011.inc"
+// #include "gems/inc/pc15011.inc"
 // #include "gems/inc/pc01024.inc"
 // #include "gems/inc/pc08049.inc"
 // #include "gems/inc/Trilled.inc"
 
 // 
-// Select material
+// Material
 //
 #macro Mat()
 // M_Emerald (0.25)
@@ -43,16 +39,16 @@ M_Ruby (0.45)
 #end
 
 // 
-// Set transformations
+// Transformations
 //
 #macro Trans()
   rotate -x * 90
   rotate -y * 90
-  translate <50.1, 81.4, 175>
+  translate <50.1, 81.3, 175>
 #end
 
 //
-// Lighting / Environment
+// Lighting
 //
 #declare MaxTrace    = 60;
 #declare Radio       = 1;
@@ -67,12 +63,10 @@ M_Ruby (0.45)
 #declare Cam_Pos     = < 51, 85.0, 165>;
 #declare Cam_Look    = < 50.1, 81, 175>; 
 #declare Cam_Angle   = 15;
-//================================================================================
-
-
-//================================================================================
-// Sky, room ...
-//================================================================================
+  
+//
+// Environmet
+//
 #include "world.inc"
 
 object { Sky }        
@@ -85,9 +79,9 @@ object { Table
   translate <60,0,175>
 }
 
-//================================================================================
+//
 // Light
-//================================================================================
+//
 #declare Lamp = union {
   light_source {0, SpectralEmission(E_Blackbody(5500)) * 60
   fade_power 2
@@ -109,13 +103,11 @@ object { Table
   
   translate <50, 130, 220>
 }  
-    
 object {Lamp}    
 
-//================================================================================
-// Gem
-//================================================================================
-
+//
+// Gem object
+//
 object {
   Geom
   Mat()  
