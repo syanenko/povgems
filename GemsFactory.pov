@@ -29,9 +29,9 @@
 #include "gems/inc/pc45149.inc"
 
 // 
-// Material
+// Mineral
 //
-#macro Mat()
+#macro Mineral()
   M_Diamond_NaturalYellow(0.35)
   // M_Diamond_LemonYellow(1.2)
   // M_Amethyst (0.5)
@@ -44,7 +44,7 @@
 // 
 // Transformations
 //
-#macro Trans()
+#macro Transform()
   scale 1
   rotate -x * 90
   rotate -y * 90
@@ -108,7 +108,7 @@ object {Lamp}
 //
 object {
   Gem
-  Mat()  
-  Trans()
+  Mineral()  
+  Transform()
   photons {target refraction on reflection on}
 }
