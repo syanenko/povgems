@@ -4,13 +4,16 @@
 // Ive, September 2013
 //
 //================================================================================
-// Modified version RC3-0.22-2 (gamut clipped) by Richard Callwood III:
+// Modified version RC3-0.22-3 by Richard Callwood III:
 // 2013-Nov-26  Converted to parameter-driven .inc file.
-// 2013-Dec-11  Corrected a grammatical error.
+// 2013-Dec-02  A separate version of this file is created with gamut mapping (CIE.inc's method 2).
 // 2023-Feb-14  Converted npow() to NPow().
 // 2023-Mar-21  White points are accepted down to 2000 K.
+// 2024-Dec-22  Luminance-based gamut mapping is implemented.
+//              Method 2 gamut mapping is refactored to increase the speed (almost 3X).
+//              The gamut mapping implementations are merged into this file.
 
-#version 3.7;        
+#version 3.7;
 
 //================================================================================
 //
@@ -43,7 +46,7 @@
 
 
 // Luminance: range: 0 .. 2.0+ / default: 1.0
-// linear luminance channel within the CIE xyz color space 
+// linear luminance channel within the CIE xyz color space
 // similar to Exposure but useful when Exponent != 1.0
 #ifndef (Luminance) #declare Luminance = 1.0; #end
 
@@ -70,7 +73,7 @@
 #ifndef (Whitepoint) #declare Whitepoint = 6504; #end
 
 
-// HDR_Max: range: 1.0 .. 100.0+ / default: 25 
+// HDR_Max: range: 1.0 .. 100.0+ / default: 25
 // Change this to cover the full dynamic range when needed, otherwise
 // values get clipped at HDR_max.
 #ifndef (HDR_max) #declare HDR_max = 25; #end
@@ -86,6 +89,12 @@
 #ifndef (Use_AdobeRGB) #declare Use_AdobeRGB = off; #end
 
 
+// GamutMap: 1 = clipping, 2 = CIE.inc's method 2, 4 = luminance-based
+// Note: As convenient as it would be to reuse the name GamutMapFunction from CIE.inc,
+// I am avoiding this because a comment in that file warns against direct access. --RC3
+#ifndef (GamutMap) #declare GamutMap = 1; #end
+
+
 
 //================================================================================
 // Internal stuff, no need to touch anything below.
@@ -93,7 +102,7 @@
 
 global_settings { assumed_gamma 1 }
 
-#include "CIE.inc" 
+#include "CIE.inc"
 
 #debug "\n*****  Spectral Composer  *****\n"
 
@@ -104,12 +113,12 @@ global_settings { assumed_gamma 1 }
 #if (Exposure <= 0.0)
   #declare Exposure = 1.0;
   #warning "(Spectral Composer) Exposure should be greater than 0.0, set to default 1.0"
-#end 
+#end
 
 #if (Luminance <= 0.0)
   #declare Luminance = 1.0;
   #warning "(Spectral Composer) Luminance should be greater than 0.0, set to default 1.0"
-#end 
+#end
 
 #if (Exponent <= 0.0)
   #declare Exponent = 1.0;
@@ -119,12 +128,31 @@ global_settings { assumed_gamma 1 }
 #if (HDR_min > 0.0)
   #declare HDR_min = -1.0;
   #warning "(Spectral Composer) HDR_min should  be lower or equal than 0.0, set to 0.0"
-#end 
+#end
 
 #if (HDR_max < 1.0)
   #declare HDR_max = 1.0;
   #warning "(Spectral Composer) HDR_max should be greater or equal than 1.0, set to 1.0"
-#end 
+#end
+
+#switch (GamutMap)
+  #case (1)
+    #local s_GamutMap = "clipped"
+    #break
+  #case (2)
+    #local s_GamutMap = "projected toward white point"
+    #break
+  #case (3)
+    #local s_GamutMap = "unimplemented"
+    #warning "Gamut mapping method 3 is unimplemented."
+    #break
+  #case (4)
+    #local s_GamutMap =  "luminance preserved"
+    #break
+  #else
+    #local s_GamutMap =  "unrecognized"
+    #warning concat ("Gamut mapping method ", str (GamutMap, 0, -1), " is unrecognized.")
+#end
 
 
 //================================================================================
@@ -133,7 +161,7 @@ global_settings { assumed_gamma 1 }
 #if (Use_AdobeRGB | (Whitepoint != 6504))
 
   #local WP = min(max(2000,Whitepoint),20000);
-  
+
  #if (Use_AdobeRGB & WP < 4000)
   CIE_ColorSystemWhitepoint(Adobe_ColSys, Blackbody2Whitepoint(WP))
   #debug "using AdobeRGB primaries with whitepoint "
@@ -147,14 +175,14 @@ global_settings { assumed_gamma 1 }
   CIE_ColorSystemWhitepoint(sRGB_ColSys, Daylight2Whitepoint(WP))
   #debug "using sRGB primaries with whitepoint D "
  #end
- 
+
  #debug str(WP,4,0) #debug "K"
 
 #else
  #debug "using sRGB primaries with D65"
-#end   
+#end
 
-#debug "\n"        
+#debug "\n"
 #debug "Exposure:    " #debug str(Exposure,1,2)    #debug "\n"
 #debug "Luminance:   " #debug str(Luminance,1,2)   #debug "\n"
 #debug "Exponent:    " #debug str(Exponent,1,2)    #debug "\n"
@@ -162,6 +190,7 @@ global_settings { assumed_gamma 1 }
 #debug "Whitepoint:  " #debug str(Whitepoint,4,0)  #debug "K\n"
 #debug "HDR minimum: " #debug str(HDR_min, 1,2)    #debug "\n"
 #debug "HDR maximum: " #debug str(HDR_max, 1,2)    #debug "\n"
+#debug concat ("GamutMap:    ", str(GamutMap, 1,2), " (", s_GamutMap, ")\n")
 
 #debug "*******************************\n\n"
 
@@ -169,20 +198,20 @@ global_settings { assumed_gamma 1 }
 //================================================================================
 // CMF
 
-// array to hold the 36 pigment funtions representing the wavelengths from 
+// array to hold the 36 pigment functions representing the wavelengths from
 // 380nm to 730nm
 #declare F = array[36];
 
 // CIE color match 380nm to 730nm
-#declare CMF = array[36][3];     
+#declare CMF = array[36][3];
 
 // the original spline from CIE.inc is only converted to an array to make
 // the CMF functions below faster.
 #for (I, 0, 35)
   #local W = 380 + I*10;
 
-  #declare F[I] = function { pigment {image_map {exr concat(FName, str(I+38,0,0))} translate -0.5} }   
-  
+  #declare F[I] = function { pigment {image_map {exr concat(FName, str(I+38,0,0))} translate -0.5} }
+
   #declare CMF[I][0] = CMF_xyz(W).x * 0.1;
   #declare CMF[I][1] = CMF_xyz(W).y * 0.1;
   #declare CMF[I][2] = CMF_xyz(W).z * 0.1;
@@ -190,10 +219,10 @@ global_settings { assumed_gamma 1 }
 
 
 // color matching functions
-// CMF for the CIE 1931 2°observer
+// CMF for the CIE 1931 2° observer
 
-#declare CMF_x = function { 
-  CMF[0][0]  * F[0](x,y,z).red  + // 380       
+#declare CMF_x = function {
+  CMF[0][0]  * F[0](x,y,z).red  + // 380
   CMF[1][0]  * F[1](x,y,z).red  + // 390
   CMF[2][0]  * F[2](x,y,z).red  + // 400
   CMF[3][0]  * F[3](x,y,z).red  + // 410
@@ -231,7 +260,7 @@ global_settings { assumed_gamma 1 }
   CMF[35][0] * F[35](x,y,z).red   // 730
 }
 
-#declare CMF_y = function { 
+#declare CMF_y = function {
   CMF[0][1]  * F[0](x,y,z).red   + // 380
   CMF[1][1]  * F[1](x,y,z).red   + // 390
   CMF[2][1]  * F[2](x,y,z).red   + // 400
@@ -270,7 +299,7 @@ global_settings { assumed_gamma 1 }
   CMF[35][1] * F[35](x,y,z).red    // 730
 }
 
-#declare CMF_z = function {  
+#declare CMF_z = function {
   CMF[0][2]  * F[0](x,y,z).red   + // 380
   CMF[1][2]  * F[1](x,y,z).red   + // 390
   CMF[2][2]  * F[2](x,y,z).red   + // 400
@@ -297,9 +326,9 @@ global_settings { assumed_gamma 1 }
   CMF[23][2] * F[23](x,y,z).red  + // 610
   CMF[24][2] * F[24](x,y,z).red  + // 620
   CMF[25][2] * F[25](x,y,z).red  + // 630
-  CMF[26][2] * F[26](x,y,z).red    // 640 
+  CMF[26][2] * F[26](x,y,z).red    // 640
                                    // 650 and above is 0.0
-} 
+}
 
 // as the input images are grayscale the used color channel does not matter.
 // "red" was just shorter to type than "green" or "blue"
@@ -319,7 +348,7 @@ global_settings { assumed_gamma 1 }
 #local BL = 0.0820;
 
 
-#local ColorProcessMat = array[3][3] {  
+#local ColorProcessMat = array[3][3] {
   {((1.0-Saturation)*RL+Saturation)*Y, (1.0-Saturation)*GL,               (1.0-Saturation)*BL},
   { (1.0-Saturation)*RL,              ((1.0-Saturation)*GL+Saturation)*Y, (1.0-Saturation)*BL},
   { (1.0-Saturation)*RL,               (1.0-Saturation)*GL,              ((1.0-Saturation)*BL+Saturation)*Y}
@@ -328,7 +357,7 @@ global_settings { assumed_gamma 1 }
 
 // csMatRGB has already been calculated by CIE.inc. Multiplication with the color
 // processing matrix from above gives the final xyz -> rgb color conversion matrix.
-#local CM = MultMat33(ColorProcessMat,csMatRGB) 
+#local CM = MultMat33(ColorProcessMat,csMatRGB)
 
 
 // The exponent function (for Exponent > 1.0) is composed of two functions (linear and a power function)
@@ -341,20 +370,20 @@ global_settings { assumed_gamma 1 }
 #if (Exponent > 1)
 
   #local Limit = 0.055 * ((Exponent-0.8) / 1.6);
-  
+
   // junction point
   #local K = Limit / (Exponent - 1);
 
   // calculate the tangent
   #local Delta = (pow(Limit, Exponent-1) * pow(Exponent, Exponent)) /
                  (pow(1+Limit, Exponent) * pow(Exponent-1, Exponent-1));
-                 
+
 
   // transfer function
   #local NPow = function(x) { select (x-K, x*Delta, pow((x+Limit)/(1+Limit), Exponent) ) }
-  
 
-#elseif (Exponent < 1) 
+
+#elseif (Exponent < 1)
 
   #local NPow = function(x) { pow(x, Exponent) }
 
@@ -365,6 +394,65 @@ global_settings { assumed_gamma 1 }
 #end
 
 
+// color channels at full dynamic range and saturation
+#local fn_Red = function
+{ ( NPow
+    (   CM[0][0] * CMF_x(x,y,z)
+      + CM[0][1] * CMF_y(x,y,z)
+      + CM[0][2] * CMF_z(x,y,z)
+    ) * E + M
+  ) * (HDR_max - HDR_min) + HDR_min
+}
+
+#local fn_Green = function
+{ ( NPow
+    (   CM[1][0] * CMF_x(x,y,z)
+      + CM[1][1] * CMF_y(x,y,z)
+      + CM[1][2] * CMF_z(x,y,z)
+    ) * E + M
+  ) * (HDR_max - HDR_min) + HDR_min
+}
+
+#local fn_Blue = function
+{ ( NPow
+    (   CM[2][0] * CMF_x(x,y,z)
+      + CM[2][1] * CMF_y(x,y,z)
+      + CM[2][2] * CMF_z(x,y,z)
+    ) * E + M
+  ) * (HDR_max - HDR_min) + HDR_min
+}
+
+
+// gamut mapping method 2 (see MapGamut() in CIE.inc)
+#local WtPt = xyz2RGB (ColSys2xyz (3));
+#local WtR = WtPt.red;
+#local WtG = WtPt.green;
+#local WtB = WtPt.blue;
+
+#local fn_P = function
+{ select
+  ( 0.5 - (x <= y & x <= z),
+    WtR / (WtR - x),
+    select
+    ( 0.5 - (y <= x & y <= z),
+      WtG / (WtG - y),
+      WtB / (WtB - z)
+    )
+  )
+}
+
+#local fn_GamutMap2 = function (x, y, z, P0_W)
+{ select (min(x,y,z), min (max (P0_W + fn_P(x,y,z) * (x - P0_W), 0), 1), min (x, 1))
+}
+
+// luminance-based gamut mapping
+// Theoretically, max() shouldn't be needed here, but FP fuzz leads to things like -0.00001.
+#local fn_GamutMapY = function (x, y, z, P0_Y)
+{ min (1, max (0, P0_Y + P0_Y / (P0_Y - min (x, y, z, 0)) * (x - P0_Y) ))
+}
+
+
+
 // our canvas
 plane {-z, 0
 
@@ -373,24 +461,55 @@ plane {-z, 0
 
     pigment_map {
 
-      [function { min(max( NPow(CM[0][0]*CMF_x(x,y,z) + CM[0][1]*CMF_y(x,y,z) + CM[0][2]*CMF_z(x,y,z)) * E + M, 0), 1)}
-        color_map { [0 rgb <L,0,0>] [1 rgb <H,0,0>] }
-      ]
+      #switch (GamutMap)
 
-      [function { min(max( NPow(CM[1][0]*CMF_x(x,y,z) + CM[1][1]*CMF_y(x,y,z) + CM[1][2]*CMF_z(x,y,z)) * E + M, 0), 1)}
-        color_map { [0 rgb <0,L,0>] [1 rgb <0,H,0>] }
-      ]
+        #case (2) // CIE.inc method 2
+          [ function { fn_GamutMap2 (fn_Red(x,y,z), fn_Green(x,y,z), fn_Blue(x,y,z), WtR) }
+            color_map { [0 rgb 0] [1 red 3] }
+          ]
+          [ function { fn_GamutMap2 (fn_Green(x,y,z), fn_Red(x,y,z), fn_Blue(x,y,z), WtG) }
+            color_map { [0 rgb 0] [1 green 3] }
+          ]
+          [ function { fn_GamutMap2 (fn_Blue(x,y,z), fn_Red(x,y,z), fn_Green(x,y,z), WtB) }
+            color_map { [0 rgb 0] [1 blue 3] }
+          ]
+          #break
 
-      [function { min(max( NPow(CM[2][0]*CMF_x(x,y,z) + CM[2][1]*CMF_y(x,y,z) + CM[2][2]*CMF_z(x,y,z)) * E + M, 0), 1)}
-        color_map { [0 rgb <0,0,L>] [1 rgb <0,0,H>] }  
-      ]
+        #case (4) // luminance-based
+          [ function { fn_GamutMapY (fn_Red(x,y,z), fn_Green(x,y,z), fn_Blue(x,y,z), CMF_y(x,y,z)) }
+            color_map { [0 rgb 0] [1 red 3] }
+          ]
+          [ function { fn_GamutMapY (fn_Green(x,y,z), fn_Red(x,y,z), fn_Blue(x,y,z), CMF_y(x,y,z)) }
+            color_map { [0 rgb 0] [1 green 3] }
+          ]
+          [ function { fn_GamutMapY (fn_Blue(x,y,z), fn_Red(x,y,z), fn_Green(x,y,z), CMF_y(x,y,z)) }
+            color_map { [0 rgb 0] [1 blue 3] }
+          ]
+          #break
+
+        #case (1) // original "brain dead clipping"
+        #else     // also the default for invalid parameter values
+          [function { min(max( NPow(CM[0][0]*CMF_x(x,y,z) + CM[0][1]*CMF_y(x,y,z) + CM[0][2]*CMF_z(x,y,z)) * E + M, 0), 1)}
+            color_map { [0 rgb <L,0,0>] [1 rgb <H,0,0>] }
+          ]
+
+          [function { min(max( NPow(CM[1][0]*CMF_x(x,y,z) + CM[1][1]*CMF_y(x,y,z) + CM[1][2]*CMF_z(x,y,z)) * E + M, 0), 1)}
+            color_map { [0 rgb <0,L,0>] [1 rgb <0,H,0>] }
+          ]
+
+          [function { min(max( NPow(CM[2][0]*CMF_x(x,y,z) + CM[2][1]*CMF_y(x,y,z) + CM[2][2]*CMF_z(x,y,z)) * E + M, 0), 1)}
+            color_map { [0 rgb <0,0,L>] [1 rgb <0,0,H>] }
+          ]
+          #break
+
+      #end
 
     }
 
   }
 
-  finish {ambient 1 diffuse 0}
-} 
+  finish { ambient 0 diffuse 0 emission 1 }
+}
 
 
 //================================================================================
@@ -417,7 +536,7 @@ camera {
 // the implementation of the Cineon format for simulating the chemical behaviour
 // of  Kodak (RIP) 35mm negative film. This is also recommended by ILM when
 // mapping OpenEXR to LDR image formats.
-//                              
+//
 // In general *some* gamut mapping function instead of just brain dead clipping.
 //
 // Make the spectral calculation almost 3 times faster by calculating 3 sequential
