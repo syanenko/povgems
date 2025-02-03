@@ -15,7 +15,7 @@ Last also has _OBJ_ export function. Then, under Windows for _DXF_ / _OBJ_ to _S
 If you prefere Unix, use [dxf2pov](https://github.com/syanenko/dxf2pov), which also can be compiled under Windows.
 
 Directory _gems/inc_ contains 2265 gem designs available for free at [Facetdiagrams](http://www.facetdiagrams.org) and already converted to POV-Ray meshes.<br>
-You can also brows and download them from [GemView](https://gemview.yesbird.online/) service.
+You can also brows and download them from [GemView](https://gemview.yesbird.online/) application.
 
 ## _Rendering_
 
