@@ -1,6 +1,9 @@
 # POV-Ray gems rendering extension
- [SpectralRenderer](https://www.lilysoft.org/CGI/SR/Spectral%20Render.htm) extension to [POV-Ray](https://www.povray.org/), written by Ive of LILYsoft has few excelent examples of gems rendering and set of mineral materials.
- This repository contains few additions, improving gems rendering techniques and gems geomety in _DXF_ and _SDL_ _mesh_ formats.
+
+![Gems](https://github.com/user-attachments/assets/f4c5c12f-f026-4cd2-9604-db07991bd9cd)
+
+[SpectralRenderer](https://www.lilysoft.org/CGI/SR/Spectral%20Render.htm) extension to [POV-Ray](https://www.povray.org/), written by Ive of LILYsoft has few excelent examples of gems rendering and set of mineral materials.
+This repository contains few additions, improving gems rendering techniques and gems geomety in _DXF_ and _SDL_ _mesh_ formats.
 
 I am also included modifications from this repository [CousinRicky’s Modifications to SpectralRender](https://github.com/CousinRicky/POV-SpectralRender-mods).
 
