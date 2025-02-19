@@ -14,8 +14,7 @@ To convert _ASC_ format from this database to DXF [GemCad](https://www.gemcad.co
 Last also has _OBJ_ export function. Then, under Windows for _DXF_ / _OBJ_ to _SDL_ convertion you can use [PoseRay](https://sites.google.com/site/poseray/home-1).<br> 
 If you prefere Unix, use [dxf2pov](https://github.com/syanenko/dxf2pov), which also can be compiled under Windows.
 
-Directory _gems/inc_ contains 2265 gem designs available for free at [Facetdiagrams](http://www.facetdiagrams.org) and already converted to POV-Ray meshes.<br>
-You can also browse and download them with [GemView](https://gemview.yesbird.online/) application.
+Directory _gems/inc_ contains 2265 gem designs available for free at [Facetdiagrams](http://www.facetdiagrams.org) and already converted to POV-Ray meshes. You can also browse and download them with [GemView](https://gemview.yesbird.online/) application.
 
 ## _Rendering_
 
